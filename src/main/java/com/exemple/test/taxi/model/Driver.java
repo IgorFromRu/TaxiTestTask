@@ -19,6 +19,7 @@ public class Driver {
     private String name;
 
     @OneToMany
+    @Column
     private List<BankAccount> bankAccounts;
 
     public Driver() {

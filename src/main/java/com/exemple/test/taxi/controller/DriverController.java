@@ -16,10 +16,10 @@ public class DriverController {
     private DriverService driverService;
 
     @PostMapping
-    public ResponseEntity<?> createDriver(@RequestBody Driver driver) {
-        final Driver driver1 = driverService.creatDriver(driver);
-        return driver1 != null
-                ? new ResponseEntity<>(driver1, HttpStatus.OK)
+    public ResponseEntity<Driver> createDriver(@RequestBody Driver driver) {
+        final Driver creatDriver = driverService.creatDriver(driver);
+        return creatDriver != null
+                ? new ResponseEntity<>(creatDriver, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
