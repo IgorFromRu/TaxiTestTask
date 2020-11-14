@@ -1,9 +1,9 @@
 package com.exemple.test.taxi.repository;
 
-import com.exemple.test.taxi.model.Driver;
+import com.exemple.test.taxi.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DriverRepository extends JpaRepository<Driver, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 }

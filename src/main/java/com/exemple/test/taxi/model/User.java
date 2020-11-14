@@ -1,6 +1,8 @@
 package com.exemple.test.taxi.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -8,20 +10,17 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "drivers")
-public class Driver {
+public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
 
     @Column(nullable = false)
     private String name;
 
-    @OneToMany
-    @Column
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<BankAccount> bankAccounts;
 
-    public Driver() {
-    }
 }

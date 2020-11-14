@@ -11,22 +11,23 @@ import java.time.LocalDateTime;
 public class TransferTo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
 
-    @Column(nullable = false)
-    private String cardSender;
+    @ManyToOne
+    @JoinColumn(name = "sender_account_id")
+    private BankAccount sender;
+
+    @ManyToOne
+    @JoinColumn(name = "recipient_account_id")
+    private BankAccount recipient;
 
     @Column(nullable = false)
-    private Long cardRecipient;
+    private LocalDateTime createDate;
 
-    @Column(nullable = false)
-    private LocalDateTime timeOperation;
+    @Column
+    private long sumOperation;
 
-    @Column(nullable = false)
-    private Long sumOperation;
 
-    public TransferTo() {
-    }
 }
