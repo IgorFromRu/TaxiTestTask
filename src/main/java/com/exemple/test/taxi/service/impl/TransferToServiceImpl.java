@@ -1,5 +1,6 @@
 package com.exemple.test.taxi.service.impl;
 
+import com.exemple.test.taxi.dto.AccountTransactionRequest;
 import com.exemple.test.taxi.dto.StatisticResponse;
 import com.exemple.test.taxi.dto.TransferRequest;
 import com.exemple.test.taxi.model.BankAccount;
@@ -10,6 +11,7 @@ import com.exemple.test.taxi.service.TransferToService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,32 +46,37 @@ public class TransferToServiceImpl implements TransferToService {
     }
 
     @Override
-    public Long getDebit(long accountId, LocalDateTime from, LocalDateTime to) {
-        BankAccount sender = bankAccountService.getAccount(accountId);
-        List<TransferTo> debitList = transferToRepository.findBySenderAndCreateDateBetween(sender, from, to);
-        return debitList.stream().mapToLong(transferTo -> transferTo.getSumOperation()).sum();
+    public Long getDebit(AccountTransactionRequest accountTransactionRequest) {
+        BankAccount sender = bankAccountService.getAccount(accountTransactionRequest.getAccountId());
+        List<TransferTo> debitList = transferToRepository.findBySenderAndCreateDateBetween(sender,
+                accountTransactionRequest.getFrom(),
+                accountTransactionRequest.getTo());
+        return debitList.stream().mapToLong(TransferTo::getSumOperation).sum();
     }
 
     @Override
-    public Long getCredit(long accountId, LocalDateTime from, LocalDateTime to) {
-        BankAccount recipient = bankAccountService.getAccount(accountId);
-        List<TransferTo> creditList = transferToRepository.findByRecipientAndCreateDateBetween(recipient, from, to);
-        return creditList.stream().mapToLong(transferTo -> transferTo.getSumOperation()).sum();
+    public Long getCredit(AccountTransactionRequest accountTransactionRequest) {
+        BankAccount recipient = bankAccountService.getAccount(accountTransactionRequest.getAccountId());
+        List<TransferTo> creditList = transferToRepository.findByRecipientAndCreateDateBetween(recipient,
+                accountTransactionRequest.getFrom(),
+                accountTransactionRequest.getTo());
+        return creditList.stream().mapToLong(TransferTo::getSumOperation).sum();
     }
 
     @Override
-    public StatisticResponse getStatistic(long accountId,
-                                          LocalDateTime from,
-                                          LocalDateTime to,
-                                          int pageNumber,
-                                          int pageSize) {
-        PageRequest request = PageRequest.of(pageNumber - 1, pageSize);
-        BankAccount account = bankAccountService.getAccount(accountId);
-        Page<TransferTo> page = transferToRepository.findBySenderOrRecipientAndCreateDateBetween(account, account, from, to, request);
+    public StatisticResponse getStatistic(AccountTransactionRequest accountTransactionRequest) {
+
+        Pageable pageRequest = PageRequest.of(accountTransactionRequest.getPageNumber() - 1, accountTransactionRequest.getPageSize());
+        BankAccount account = bankAccountService.getAccount(accountTransactionRequest.getAccountId());
+        Page<TransferTo> page = transferToRepository.findBySenderOrRecipientAndCreateDateBetween(account,
+                account,
+                accountTransactionRequest.getFrom(),
+                accountTransactionRequest.getTo(),
+                pageRequest);
         StatisticResponse response = new StatisticResponse();
         response.setTransferToList(page.getContent());
-        response.setPageNumber(pageNumber);
-        response.setPageSizeNumber(pageSize);
+        response.setPageNumber(accountTransactionRequest.getPageNumber());
+        response.setPageSizeNumber(accountTransactionRequest.getPageSize());
         response.setTotalPages(page.getTotalPages());
         return response;
     }

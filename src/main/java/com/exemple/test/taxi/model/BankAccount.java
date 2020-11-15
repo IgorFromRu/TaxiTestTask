@@ -23,5 +23,4 @@ public class BankAccount {
 
     @Column
     private long balance;
-
 }

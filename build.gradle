@@ -29,4 +29,5 @@ dependencies {
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.23.Final'
     // https://mvnrepository.com/artifact/org.liquibase/liquibase-core
     compile group: 'org.liquibase', name: 'liquibase-core', version: '4.1.1'
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.8.8'
 }

@@ -15,7 +15,7 @@ public interface AccountRepository extends JpaRepository<BankAccount, Long> {
     List<BankAccount> findByUser(User user);
 
     @Query("select ba from BankAccount ba where ba.numberCard = :nam")
-    BankAccount findByNumberCard(@Param("nam") String nuberCard);
+    BankAccount findByNumberCard(@Param("nam") String numberCard);
 
 
 }

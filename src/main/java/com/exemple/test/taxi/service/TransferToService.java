@@ -1,5 +1,6 @@
 package com.exemple.test.taxi.service;
 
+import com.exemple.test.taxi.dto.AccountTransactionRequest;
 import com.exemple.test.taxi.dto.StatisticResponse;
 import com.exemple.test.taxi.dto.TransferRequest;
 import com.exemple.test.taxi.model.TransferTo;
@@ -10,12 +11,9 @@ public interface TransferToService {
 
     TransferTo createTransfer(TransferRequest transferRequest);
 
-    Long getDebit(long accountId, LocalDateTime localDateTimeFrom, LocalDateTime localDateTimeTo);
+    Long getDebit(AccountTransactionRequest accountTransactionRequest);
 
-    Long getCredit(long accountId, LocalDateTime localDateTimeFrom, LocalDateTime localDateTimeTo);
+    Long getCredit(AccountTransactionRequest accountTransactionRequest);
 
-    StatisticResponse getStatistic(long accountId, LocalDateTime localDateTimeFrom,
-                                   LocalDateTime localDateTimeTo,
-                                   int pageNumber,
-                                   int pageSize);
+    StatisticResponse getStatistic(AccountTransactionRequest accountTransactionRequest);
 }

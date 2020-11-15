@@ -1,5 +1,6 @@
 package com.exemple.test.taxi.controller;
 
+import com.exemple.test.taxi.dto.AccountTransactionRequest;
 import com.exemple.test.taxi.dto.StatisticResponse;
 import com.exemple.test.taxi.dto.TransferRequest;
 import com.exemple.test.taxi.model.TransferTo;
@@ -27,33 +28,25 @@ public class TransferController {
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping
-    public ResponseEntity<Long> getDebit(@RequestParam(name = "account_id") long accountId,
-                                         @RequestParam(name = "from") LocalDateTime from,
-                                         @RequestParam(name = "to") LocalDateTime to) {
-        Long debit = transferToService.getDebit(accountId, from, to);
+    @GetMapping(value = "/debit")
+    public ResponseEntity<Long> getDebit(@RequestBody AccountTransactionRequest accountTransactionRequest) {
+        Long debit = transferToService.getDebit(accountTransactionRequest);
         return debit != null
                 ? new ResponseEntity<>(debit, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping
-    public ResponseEntity<Long> getCredit(@RequestParam(name = "account_id") long accountId,
-                                          @RequestParam(name = "from") LocalDateTime from,
-                                          @RequestParam(name = "to") LocalDateTime to) {
-        Long credit = transferToService.getCredit(accountId, from, to);
+    @GetMapping(value = "/credit")
+    public ResponseEntity<Long> getCredit(@RequestBody AccountTransactionRequest accountTransactionRequest) {
+        Long credit = transferToService.getCredit(accountTransactionRequest);
         return credit != null
                 ? new ResponseEntity<>(credit, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping
-    public ResponseEntity<StatisticResponse> getStatistic(@RequestParam(name = "account_id") long accountId,
-                                                          @RequestParam(name = "from") LocalDateTime from,
-                                                          @RequestParam(name = "to") LocalDateTime to,
-                                                          @RequestParam(name = "page") int pageNumber,
-                                                          @RequestParam(name = "size") int pageSize) {
-        StatisticResponse statistic = transferToService.getStatistic(accountId, from, to, pageNumber, pageSize);
+    @GetMapping(value = "/statistic")
+    public ResponseEntity<StatisticResponse> getStatistic(@RequestBody AccountTransactionRequest accountTransactionRequest) {
+        StatisticResponse statistic = transferToService.getStatistic(accountTransactionRequest);
         return statistic != null
                 ? new ResponseEntity<>(statistic, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);

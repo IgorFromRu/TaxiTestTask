@@ -27,12 +27,16 @@ public class BankAccountServiceImpl implements BankAccountService {
         bankAccount.setUser(user);
         bankAccount.setNumberCard(UUID.randomUUID().toString());
         bankAccount.setBalance(0);
+        accountRepository.save(bankAccount);
+        bankAccount.getUser().setBankAccounts(null);
         return bankAccount;
     }
 
     @Override
     public BankAccount getAccount(long id) {
-        return accountRepository.findById(id).orElseThrow(() -> new RuntimeException("Account is not found."));
+        BankAccount bankAccount = accountRepository.findById(id).orElseThrow(() -> new RuntimeException("Account is not found."));
+        bankAccount.getUser().setBankAccounts(null);
+        return bankAccount;
     }
 
     @Override
@@ -44,6 +48,8 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Override
     public List<BankAccount> getBankAccountsByUser(long userId) {
         User user = userService.getUser(userId);
-        return accountRepository.findByUser(user);
+        List<BankAccount> bankAccounts = accountRepository.findByUser(user);
+        bankAccounts.forEach(bankAccount -> bankAccount.getUser().setBankAccounts(null));
+        return bankAccounts;
     }
 }
