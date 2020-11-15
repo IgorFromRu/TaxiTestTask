@@ -36,8 +36,9 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    public void deleteAccount(long id) {
+    public String deleteAccount(long id) {
         accountRepository.deleteById(id);
+        return "Account deleted";
     }
 
     @Override

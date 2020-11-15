@@ -20,6 +20,6 @@ public interface TransferToRepository extends JpaRepository<TransferTo, Long> {
     List<TransferTo> findByRecipientAndCreateDateBetween(BankAccount recipient, LocalDateTime from, LocalDateTime to);
 
     Page<TransferTo> findBySenderOrRecipientAndCreateDateBetween(BankAccount sender, BankAccount recipient,
-                                                                    LocalDateTime from, LocalDateTime to,
-                                                                    PageRequest pageRequest);
+                                                                 LocalDateTime from, LocalDateTime to,
+                                                                 PageRequest pageRequest);
 }

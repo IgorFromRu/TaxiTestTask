@@ -1,8 +1,6 @@
 package com.exemple.test.taxi.controller;
 
-import com.exemple.test.taxi.model.BankAccount;
 import com.exemple.test.taxi.model.User;
-import com.exemple.test.taxi.service.BankAccountService;
 import com.exemple.test.taxi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,9 +17,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private BankAccountService bankAccountService;
-
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
         final User creatUser = userService.crateUser(user);
@@ -31,7 +26,7 @@ public class UserController {
     }
 
     @GetMapping(value = "{id}")
-    public ResponseEntity<User> getUser(@PathVariable(name = "id") long id){
+    public ResponseEntity<User> getUser(@PathVariable(name = "id") long id) {
         return userService.getUser(id) != null
                 ? new ResponseEntity<>(userService.getUser(id), HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -39,17 +34,25 @@ public class UserController {
 
     @PutMapping(value = "{id}")
     public ResponseEntity<User> updateUser(@PathVariable(name = "id") long id, @RequestBody User user) {
-
-        return null;
+        User userUpdate = userService.updateUser(id, user);
+        return userUpdate != null
+                ? new ResponseEntity<>(userUpdate, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable(name = "id") long id){
-        return null;
+    public ResponseEntity<String> deleteUser(@PathVariable(name = "id") long id) {
+        String deleteUser = userService.deleteUser(id);
+        return deleteUser != null
+                ? new ResponseEntity<>(deleteUser, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping
     public ResponseEntity<List<User>> getUsers() {
-        return null;
+        List<User> usersList = userService.getUsers();
+        return usersList != null
+                ? new ResponseEntity<>(usersList, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

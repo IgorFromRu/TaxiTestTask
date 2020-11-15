@@ -29,7 +29,7 @@ public class TransferToServiceImpl implements TransferToService {
     @Transactional
     public TransferTo createTransfer(TransferRequest transferRequest) {
         BankAccount senderAccount = bankAccountService.getAccount(transferRequest.getSenderNumberCardId());
-        if (senderAccount.getBalance() < transferRequest.getSum()){
+        if (senderAccount.getBalance() < transferRequest.getSum()) {
             throw new RuntimeException("Insufficient funds");
         }
         BankAccount recipientAccount = bankAccountService.getAccount(transferRequest.getRecipientNumberCardId());
@@ -59,10 +59,10 @@ public class TransferToServiceImpl implements TransferToService {
 
     @Override
     public StatisticResponse getStatistic(long accountId,
-                                                LocalDateTime from,
-                                                LocalDateTime to,
-                                                int pageNumber,
-                                                int pageSize) {
+                                          LocalDateTime from,
+                                          LocalDateTime to,
+                                          int pageNumber,
+                                          int pageSize) {
         PageRequest request = PageRequest.of(pageNumber - 1, pageSize);
         BankAccount account = bankAccountService.getAccount(accountId);
         Page<TransferTo> page = transferToRepository.findBySenderOrRecipientAndCreateDateBetween(account, account, from, to, request);
